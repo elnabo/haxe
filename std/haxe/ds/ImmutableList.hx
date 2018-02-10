@@ -14,6 +14,16 @@ abstract ImmutableList<T>(ListRepr<T>) from ListRepr<T> to ListRepr<T> {
 		return Hd(v,a);
 	}
 	
+	@:op(a + b) static inline function concat<T> (a : ImmutableList<T>, b : ImmutableList<T> ) : ImmutableList<T> {
+		if ( a == null ) { return b; }
+		if ( b == null ) { return a; }
+		return switch (a) {
+			case Tl: b;
+			case Hd(v, tl):
+				v::concat(tl, b);
+		}
+	}
+	
 	@:to function toArray() : Array<T> {
 		var a = [];
 		var t = this;
